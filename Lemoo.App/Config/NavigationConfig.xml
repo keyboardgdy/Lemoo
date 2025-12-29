@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Navigation>
+  <!-- 主导航项 -->
+  <NavigationItems>
+    <Item Title="文件管理" Icon="&#xE8A5;" IsExpanded="true">
+      <Children>
+        <Item Title="首页" Icon="&#xE80F;" PageKey="Home" PageType="Lemoo.App.Views.Pages.FileManagement.HomePage" IsEnabled="true" />
+        <Item Title="文档" Icon="&#xE8A5;" PageKey="Document" PageType="Lemoo.App.Views.Pages.FileManagement.DocumentPage" IsEnabled="true" />
+        <Item Title="项目" Icon="&#xE8B7;" PageKey="Project" PageType="Lemoo.App.Views.Pages.FileManagement.ProjectPage" IsEnabled="true" />
+        <Item Title="任务" Icon="&#xE7C3;" PageKey="Task" PageType="Lemoo.App.Views.Pages.FileManagement.TaskPage" IsEnabled="true" />
+        <Item Title="日历" Icon="&#xE787;" PageKey="Calendar" PageType="Lemoo.App.Views.Pages.FileManagement.CalendarPage" IsEnabled="true" />
+        <Item Title="笔记" Icon="&#xE8A5;" PageKey="Note" PageType="Lemoo.App.Views.Pages.FileManagement.NotePage" IsEnabled="true" />
+        <Item Title="归档" Icon="&#xE7B8;" PageKey="Archive" PageType="Lemoo.App.Views.Pages.FileManagement.ArchivePage" IsEnabled="true" />
+      </Children>
+    </Item>
+    <Item Title="协作" Icon="&#xE716;" IsExpanded="true" IsEnabled="true">
+      <Children>
+        <Item Title="团队" Icon="&#xE716;" PageKey="Team" PageType="Lemoo.App.Views.Pages.Collaboration.TeamPage" IsEnabled="true" />
+      </Children>
+    </Item>
+    <Item Title="视图分析" Icon="&#xE9D2;" IsExpanded="true" IsEnabled="true">
+      <Children>
+        <Item Title="分析" Icon="&#xE9D2;" PageKey="Analytics" PageType="Lemoo.App.Views.Pages.Analytics.AnalyticsPage" IsEnabled="true" />
+      </Children>
+    </Item>
+  </NavigationItems>
+  
+  <!-- 底部导航项 -->
+  <BottomNavigationItems>
+    <Item Title="设置" Icon="&#xE713;" PageKey="Settings" PageType="Lemoo.App.Views.Pages.Settings.SettingsPage" IsEnabled="true" />
+  </BottomNavigationItems>
+</Navigation>
+

@@ -1,0 +1,54 @@
+<Window x:Class="Lemoo.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Lemoo.App.ViewModels"
+        xmlns:chrome="clr-namespace:Lemoo.App.Controls.Chrome"
+        xmlns:tabs="clr-namespace:Lemoo.App.Controls.Tabs"
+        xmlns:nav="clr-namespace:Lemoo.App.Controls.Navigation"
+        mc:Ignorable="d"
+        Title="{Binding Title}"
+        Height="802"
+        Width="1440"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="#FF161A1E">
+
+    <Grid Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="TitleRow" Height="32" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 自定义标题栏 -->
+        <chrome:MainTitleBar x:Name="MainTitleBar"
+                             Grid.Row="0" 
+                             Grid.ColumnSpan="2"
+                             VerticalAlignment="Top"
+                             Margin="0"
+                             NavigateToPage="MainTitleBar_NavigateToPage" />
+
+        <!-- 侧边栏导航 -->
+        <nav:Sidebar x:Name="Sidebar"
+                     Grid.Row="1" Grid.Column="0"
+                     NavigateToPage="Sidebar_NavigateToPage" />
+
+        <!-- 主内容区域：标签页承载区 -->
+        <Grid x:Name="DocumentHostGrid" Grid.Row="1" Grid.Column="1" Margin="8,8,8,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <tabs:DocumentTabHost x:Name="DocumentTabHost" Grid.Row="1" />
+        </Grid>
+    </Grid>
+</Window>
+
+
