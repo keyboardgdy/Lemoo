@@ -14,4 +14,6 @@
 - `[ObservableProperty]` 快速声明可通知属性
 - `[RelayCommand]` 快速声明命令
 
+## 界面展示
+<img width="1440" height="802" alt="image" src="https://github.com/user-attachments/assets/8a531f63-6ce8-4633-81f2-8dc9198a8d3b" />
 
