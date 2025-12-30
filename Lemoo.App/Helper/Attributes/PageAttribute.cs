@@ -1,6 +1,6 @@
 using System;
 
-namespace Lemoo.App.Attributes;
+namespace Lemoo.App.Helper.Attributes;
 
 /// <summary>
 /// 页面特性：用于标记页面的元数据，支持自动发现和注册

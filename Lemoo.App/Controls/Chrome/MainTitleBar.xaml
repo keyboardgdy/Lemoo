@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Lemoo.App.Models;assembly=Lemoo.App"
              xmlns:local="clr-namespace:Lemoo.App.Controls.Chrome"
-             xmlns:converters="clr-namespace:Lemoo.App.Converters"
+             xmlns:converters="clr-namespace:Lemoo.App.Helper.Converters"
              mc:Ignorable="d"
              Height="32">
     <UserControl.Resources>
@@ -325,11 +325,16 @@
             </Grid.ColumnDefinitions>
 
             <!-- Logo -->
-            <Image Source="pack://application:,,,/Assets/Images/Lemoo_Logo.jpeg"
+            <Image Source="pack://application:,,,/Assets/Images/Lemoo_move.png"
                    Width="24"
                    Height="24"
                    Stretch="UniformToFill"
-                   VerticalAlignment="Center">
+                   VerticalAlignment="Center"
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.CachingHint="Cache"
+                   RenderOptions.ClearTypeHint="Enabled"
+                   UseLayoutRounding="True"
+                   SnapsToDevicePixels="True">
                 <Image.Clip>
                     <RectangleGeometry Rect="0,0,24,24" RadiusX="5" RadiusY="5" />
                 </Image.Clip>

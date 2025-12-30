@@ -1,5 +1,5 @@
 using System.Windows.Controls;
-using Lemoo.App.Attributes;
+using Lemoo.App.Helper.Attributes;
 
 namespace Lemoo.App.Views.Pages.Collaboration;
 

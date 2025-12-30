@@ -41,9 +41,15 @@ public partial class MainWindow : Window
         };
         WindowChrome.SetWindowChrome(this, chrome);
         
-        // 设置窗口图标（使用 Assets 中的图片）
-        var iconUri = new Uri("pack://application:,,,/Assets/Images/Lemoo_Logo.jpeg", UriKind.Absolute);
-        Icon = new BitmapImage(iconUri);
+        // 设置窗口图标（优化渲染质量）
+        var iconUri = new Uri("pack://application:,,,/Assets/Images/Lemoo_move.png", UriKind.Absolute);
+        var bitmapImage = new BitmapImage(iconUri)
+        {
+            DecodePixelWidth = 256,  // 设置解码宽度，提高清晰度
+            DecodePixelHeight = 256, // 设置解码高度，提高清晰度
+            CacheOption = BitmapCacheOption.OnLoad // 立即缓存
+        };
+        Icon = bitmapImage;
         
         // 确保标题栏按钮可以点击
         Loaded += MainWindow_Loaded;

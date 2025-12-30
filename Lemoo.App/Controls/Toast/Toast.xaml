@@ -1,0 +1,172 @@
+<UserControl x:Class="Lemoo.App.Controls.Toast.Toast"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:enums="clr-namespace:Lemoo.App.Models.Enums"
+             mc:Ignorable="d"
+             d:DesignHeight="60" d:DesignWidth="300">
+    <UserControl.Resources>
+        <!-- Toast 样式转换器 -->
+        <Style x:Key="ToastBorderStyle" TargetType="Border">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Success}">
+                    <Setter Property="Background" Value="#FF1F3F1F" />
+                    <Setter Property="BorderBrush" Value="#FF4CAF50" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Error}">
+                    <Setter Property="Background" Value="#FF3F1F1F" />
+                    <Setter Property="BorderBrush" Value="#FFFF4444" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Warning}">
+                    <Setter Property="Background" Value="#FF3F3F1F" />
+                    <Setter Property="BorderBrush" Value="#FFFFC107" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Info}">
+                    <Setter Property="Background" Value="#FF1F1F3F" />
+                    <Setter Property="BorderBrush" Value="#FF2196F3" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 图标转换器 -->
+        <Style x:Key="IconTextStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Success}">
+                    <Setter Property="Text" Value="&#xE73E;" />
+                    <Setter Property="Foreground" Value="#FF4CAF50" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Error}">
+                    <Setter Property="Text" Value="&#xE783;" />
+                    <Setter Property="Foreground" Value="#FFFF4444" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Warning}">
+                    <Setter Property="Text" Value="&#xE7BA;" />
+                    <Setter Property="Foreground" Value="#FFFFC107" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToastType, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static enums:ToastType.Info}">
+                    <Setter Property="Text" Value="&#xE946;" />
+                    <Setter Property="Foreground" Value="#FF2196F3" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Border x:Name="ToastBorder"
+           Style="{StaticResource ToastBorderStyle}"
+           BorderThickness="1"
+           CornerRadius="8"
+           Padding="16,12"
+           MinWidth="280"
+           MaxWidth="400"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Top"
+           Margin="0,10,0,0"
+           RenderTransformOrigin="0.5,0">
+        <Border.RenderTransform>
+            <TransformGroup>
+                <TranslateTransform x:Name="SlideTransform" Y="-100" />
+                <ScaleTransform x:Name="ScaleTransform" ScaleX="0.8" ScaleY="0.8" />
+            </TransformGroup>
+        </Border.RenderTransform>
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <!-- 滑入动画 -->
+                        <DoubleAnimation Storyboard.TargetName="SlideTransform"
+                                       Storyboard.TargetProperty="Y"
+                                       From="-100"
+                                       To="0"
+                                       Duration="0:0:0.3">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut" />
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <!-- 缩放动画 -->
+                        <DoubleAnimation Storyboard.TargetName="ScaleTransform"
+                                       Storyboard.TargetProperty="ScaleX"
+                                       From="0.8"
+                                       To="1"
+                                       Duration="0:0:0.3">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut" />
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetName="ScaleTransform"
+                                       Storyboard.TargetProperty="ScaleY"
+                                       From="0.8"
+                                       To="1"
+                                       Duration="0:0:0.3">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut" />
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <!-- 淡入动画 -->
+                        <DoubleAnimation Storyboard.TargetName="ToastBorder"
+                                       Storyboard.TargetProperty="Opacity"
+                                       From="0"
+                                       To="1"
+                                       Duration="0:0:0.3" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 图标 -->
+            <TextBlock x:Name="IconText"
+                      Grid.Column="0"
+                      Style="{StaticResource IconTextStyle}"
+                      FontFamily="Segoe MDL2 Assets"
+                      FontSize="20"
+                      VerticalAlignment="Center"
+                      Margin="0,0,12,0" />
+
+            <!-- 消息内容 -->
+            <TextBlock Grid.Column="1"
+                      Text="{Binding Message, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                      Foreground="#FFEEEEEE"
+                      TextWrapping="Wrap"
+                      VerticalAlignment="Center"
+                      FontSize="13"
+                      LineHeight="18" />
+
+            <!-- 关闭按钮 -->
+            <Button Grid.Column="2"
+                   x:Name="CloseButton"
+                   Click="CloseButton_Click"
+                   Width="20"
+                   Height="20"
+                   Background="Transparent"
+                   BorderThickness="0"
+                   Cursor="Hand"
+                   Margin="8,0,0,0"
+                   Padding="0"
+                   VerticalAlignment="Center">
+                <TextBlock Text="&#xE8BB;"
+                          FontFamily="Segoe MDL2 Assets"
+                          FontSize="12"
+                          Foreground="#FFAAAAAA"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#33FFFFFF" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>
+

@@ -1,0 +1,10 @@
+{
+  "Database": {
+    "Server": "localhost",
+    "Database": "LemooDb",
+    "TrustServerCertificate": true,
+    "UserId": "sa",
+    "Password": "newu"
+  }
+}
+

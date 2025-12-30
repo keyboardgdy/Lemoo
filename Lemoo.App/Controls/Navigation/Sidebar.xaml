@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Lemoo.App.Models;assembly=Lemoo.App"
              xmlns:local="clr-namespace:Lemoo.App.Controls.Navigation"
-             xmlns:converters="clr-namespace:Lemoo.App.Converters"
+             xmlns:converters="clr-namespace:Lemoo.App.Helper.Converters"
              mc:Ignorable="d"
              Width="240">
     <UserControl.Resources>

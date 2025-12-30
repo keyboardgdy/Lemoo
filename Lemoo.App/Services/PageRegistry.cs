@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
-using Lemoo.App.Attributes;
+using Lemoo.App.Helper.Attributes;
 
 namespace Lemoo.App.Services;
 

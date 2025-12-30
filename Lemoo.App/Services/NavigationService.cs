@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Lemoo.App.Models;
 
@@ -162,14 +164,18 @@ public class NavigationService
             var (navigationItems, bottomNavigationItems) = NavigationXmlLoader.LoadFromXml(xmlPath);
             
             // 批量填充集合（减少通知次数，提高性能）
+            // 使用临时列表，然后一次性替换集合内容
+            var tempNavItems = new List<NavigationItem>(navigationItems);
+            var tempBottomNavItems = new List<NavigationItem>(bottomNavigationItems);
+            
             _navigationItems.Clear();
-            foreach (var item in navigationItems)
+            foreach (var item in tempNavItems)
             {
                 _navigationItems.Add(item);
             }
             
             _bottomNavigationItems.Clear();
-            foreach (var item in bottomNavigationItems)
+            foreach (var item in tempBottomNavItems)
             {
                 _bottomNavigationItems.Add(item);
             }

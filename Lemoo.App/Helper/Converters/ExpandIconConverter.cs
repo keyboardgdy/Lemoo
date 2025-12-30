@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Lemoo.App.Converters;
+namespace Lemoo.App.Helper.Converters;
 
 /// <summary>
 /// 展开图标转换器：根据展开状态返回不同的图标字符

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Lemoo.App.Converters;
+namespace Lemoo.App.Helper.Converters;
 
 /// <summary>
 /// 布尔值到可见性转换器：true 返回 Visible，false 返回 Collapsed
@@ -14,6 +14,12 @@ public class BoolToVisibilityConverter : IValueConverter
     {
         if (value is bool boolValue)
         {
+            // 如果 parameter 是 "Invert"，则反转逻辑
+            bool invert = parameter?.ToString() == "Invert";
+            if (invert)
+            {
+                return boolValue ? Visibility.Collapsed : Visibility.Visible;
+            }
             return boolValue ? Visibility.Visible : Visibility.Collapsed;
         }
         return Visibility.Collapsed;

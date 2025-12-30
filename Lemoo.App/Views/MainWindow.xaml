@@ -40,7 +40,7 @@
                      NavigateToPage="Sidebar_NavigateToPage" />
 
         <!-- 主内容区域：标签页承载区 -->
-        <Grid x:Name="DocumentHostGrid" Grid.Row="1" Grid.Column="1" Margin="8,8,8,12">
+        <Grid x:Name="DocumentHostGrid" Grid.Row="1" Grid.Column="1" Margin="8,8,8,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />

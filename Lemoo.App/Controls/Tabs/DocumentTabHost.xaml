@@ -167,7 +167,31 @@
         </Grid.RowDefinitions>
 
         <!-- 标签栏 -->
-        <Border Grid.Row="0" Background="#20252B" CornerRadius="8,8,0,0">
+        <Border Grid.Row="0" Background="#20252B" CornerRadius="8,8,0,0"
+                ContextMenuOpening="TabBar_ContextMenuOpening">
+            <Border.ContextMenu>
+                <ContextMenu x:Name="TabBarContextMenu">
+                    <MenuItem Click="ContextMenu_CloseAllTabs_Click">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE74D;"
+                                          FontFamily="Segoe MDL2 Assets"
+                                          FontSize="14"
+                                          Foreground="#EEEEEE"
+                                          Background="Transparent"
+                                          VerticalAlignment="Center"
+                                          Width="16"
+                                          TextAlignment="Center"
+                                          Margin="0,0,8,0" />
+                                <TextBlock Text="关闭所有标签页"
+                                          Foreground="#EEEEEE"
+                                          Background="Transparent"
+                                          VerticalAlignment="Center" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </ContextMenu>
+            </Border.ContextMenu>
             <DockPanel LastChildFill="False">
                 <!-- 标签集合 -->
                 <ItemsControl x:Name="TabStrip"

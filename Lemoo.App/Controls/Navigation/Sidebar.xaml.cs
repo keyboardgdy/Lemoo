@@ -218,13 +218,19 @@ public partial class Sidebar : UserControl
     }
 
     /// <summary>
-    /// 递归更新导航项的选中状态
+    /// 递归更新导航项的选中状态（优化：只更新状态改变的项）
     /// </summary>
     private void UpdateSelection(ObservableCollection<NavigationItem> items, NavigationItem selectedItem)
     {
         foreach (var item in items)
         {
-            item.IsSelected = item == selectedItem;
+            var shouldBeSelected = item == selectedItem;
+            // 只更新状态改变的项，避免不必要的属性通知
+            if (item.IsSelected != shouldBeSelected)
+            {
+                item.IsSelected = shouldBeSelected;
+            }
+            
             if (item.HasChildren)
             {
                 UpdateSelection(item.Children, selectedItem);

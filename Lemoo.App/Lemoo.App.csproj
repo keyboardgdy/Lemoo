@@ -10,6 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
   </ItemGroup>
 
@@ -20,15 +23,27 @@
 
   <ItemGroup>
     <Resource Include="Assets\Images\Lemoo_Logo.jpeg" />
+    <Resource Include="Assets\Images\Lemoo_move.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Config\NavigationConfig.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.Development.json" Condition="'$(Configuration)' == 'Debug' AND Exists('appsettings.Development.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="appsettings.Development.json.example">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Themes\Styles\" />
+    <Folder Include="ViewModels\Pages\" />
     <Folder Include="Views\Windows\" />
   </ItemGroup>
 

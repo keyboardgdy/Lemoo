@@ -13,6 +13,8 @@ namespace Lemoo.App.Services;
 public class PageFactory
 {
     private readonly Dictionary<string, Type> _pageTypeCache = new();
+    private readonly Dictionary<string, Page> _pageInstanceCache = new(); // 页面实例缓存
+    private readonly Dictionary<string, Type> _typeNameCache = new(); // 类型名称查找缓存
     private readonly NavigationService _navigationService;
     private readonly PageRegistry _pageRegistry;
 
@@ -83,10 +85,17 @@ public class PageFactory
             return null;
         }
 
+        // 首先检查缓存
+        if (_typeNameCache.TryGetValue(typeName, out var cachedType))
+        {
+            return cachedType;
+        }
+
         // 首先尝试直接获取类型
         var type = Type.GetType(typeName);
         if (type != null)
         {
+            _typeNameCache[typeName] = type;
             return type;
         }
 
@@ -95,6 +104,7 @@ public class PageFactory
         type = assembly.GetType(typeName);
         if (type != null)
         {
+            _typeNameCache[typeName] = type;
             return type;
         }
 
@@ -114,30 +124,42 @@ public class PageFactory
             type = loadedAssembly.GetType(typeName);
             if (type != null)
             {
+                _typeNameCache[typeName] = type;
                 return type;
             }
         }
 
+        // 缓存 null 结果，避免重复查找
+        _typeNameCache[typeName] = null!;
         return null;
     }
 
     /// <summary>
-    /// 根据 PageKey 创建页面实例
+    /// 根据 PageKey 创建页面实例（使用缓存优化性能）
     /// </summary>
-    public Page? CreatePage(string pageKey)
+    public Page? CreatePage(string pageKey, bool useCache = true)
     {
         if (string.IsNullOrEmpty(pageKey))
         {
             return null;
         }
 
+        // 如果启用缓存且缓存中有实例，直接返回（注意：对于需要状态的页面，可能需要每次都创建新实例）
+        if (useCache && _pageInstanceCache.TryGetValue(pageKey, out var cachedPage))
+        {
+            return cachedPage;
+        }
+
+        Page? page = null;
+        Type? pageType = null;
+
         // 优先从页面注册表获取
-        var pageType = _pageRegistry.GetPageType(pageKey);
+        pageType = _pageRegistry.GetPageType(pageKey);
         if (pageType != null)
         {
             try
             {
-                return Activator.CreateInstance(pageType) as Page;
+                page = Activator.CreateInstance(pageType) as Page;
             }
             catch (Exception ex)
             {
@@ -145,41 +167,67 @@ public class PageFactory
                 return null;
             }
         }
-
-        // 从缓存中获取页面类型
-        if (_pageTypeCache.TryGetValue(pageKey, out pageType))
+        else
         {
-            try
+            // 从缓存中获取页面类型
+            if (_pageTypeCache.TryGetValue(pageKey, out pageType))
             {
-                return Activator.CreateInstance(pageType) as Page;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"创建页面失败 {pageKey}: {ex.Message}");
-                return null;
-            }
-        }
-
-        // 如果缓存中没有，尝试从导航项中查找
-        var navItem = FindNavigationItemByPageKey(pageKey);
-        if (navItem != null && !string.IsNullOrEmpty(navItem.PageType))
-        {
-            try
-            {
-                var type = GetPageType(navItem.PageType);
-                if (type != null && typeof(Page).IsAssignableFrom(type))
+                try
                 {
-                    _pageTypeCache[pageKey] = type;
-                    return Activator.CreateInstance(type) as Page;
+                    page = Activator.CreateInstance(pageType) as Page;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"创建页面失败 {pageKey}: {ex.Message}");
+                    return null;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                System.Diagnostics.Debug.WriteLine($"创建页面失败 {pageKey}: {ex.Message}");
+                // 如果缓存中没有，尝试从导航项中查找
+                var navItem = FindNavigationItemByPageKey(pageKey);
+                if (navItem != null && !string.IsNullOrEmpty(navItem.PageType))
+                {
+                    try
+                    {
+                        var type = GetPageType(navItem.PageType);
+                        if (type != null && typeof(Page).IsAssignableFrom(type))
+                        {
+                            _pageTypeCache[pageKey] = type;
+                            page = Activator.CreateInstance(type) as Page;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"创建页面失败 {pageKey}: {ex.Message}");
+                    }
+                }
             }
         }
 
-        return null;
+        // 如果启用缓存且成功创建页面，缓存实例
+        if (useCache && page != null)
+        {
+            _pageInstanceCache[pageKey] = page;
+        }
+
+        return page;
+    }
+
+    /// <summary>
+    /// 清除页面实例缓存（当需要强制重新创建页面时调用）
+    /// </summary>
+    public void ClearPageInstanceCache()
+    {
+        _pageInstanceCache.Clear();
+    }
+
+    /// <summary>
+    /// 从缓存中移除特定页面实例
+    /// </summary>
+    public void RemovePageInstanceFromCache(string pageKey)
+    {
+        _pageInstanceCache.Remove(pageKey);
     }
 
     /// <summary>

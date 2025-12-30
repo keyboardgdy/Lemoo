@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Lemoo.App.Converters;
+namespace Lemoo.App.Helper.Converters;
 
 /// <summary>
 /// 字符串到可见性转换器：如果字符串为空或null，返回Collapsed，否则返回Visible

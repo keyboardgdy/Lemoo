@@ -1,0 +1,11 @@
+# 开发环境配置文件（如果包含敏感信息，应添加到 .gitignore）
+appsettings.Development.json
+
+# 用户特定的配置文件
+appsettings.*.json
+!appsettings.json
+
+# 包含敏感信息的配置文件
+appsettings.Production.json
+appsettings.Local.json
+

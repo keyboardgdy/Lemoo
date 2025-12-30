@@ -97,7 +97,7 @@ public partial class DocumentTabHost : UserControl, INotifyPropertyChanged
             var sidebar = mainWindow.FindName("Sidebar") as UIElement;
             if (sidebar != null) sidebar.Visibility = Visibility.Visible;
             var contentGrid = mainWindow.FindName("DocumentHostGrid") as Grid;
-            if (contentGrid != null) contentGrid.Margin = new Thickness(8,8,8,12);
+            if (contentGrid != null) contentGrid.Margin = new Thickness(8,8,8,0);
         }
 
         // 更新按钮图标
@@ -261,9 +261,14 @@ public partial class DocumentTabHost : UserControl, INotifyPropertyChanged
 
     private void UpdateActiveState()
     {
+        // 只更新状态改变的标签页，避免不必要的属性通知
         foreach (var tab in Tabs)
         {
-            tab.IsActive = tab == SelectedTab;
+            var shouldBeActive = tab == SelectedTab;
+            if (tab.IsActive != shouldBeActive)
+            {
+                tab.IsActive = shouldBeActive;
+            }
         }
     }
 
@@ -310,11 +315,22 @@ public partial class DocumentTabHost : UserControl, INotifyPropertyChanged
     {
         if (_contextMenuTab is null) return;
 
+        // 批量移除标签页，减少通知次数
         var tabsToRemove = Tabs.Where(t => t != _contextMenuTab).ToList();
+        
+        // 先从字典中移除
         foreach (var tab in tabsToRemove)
         {
             _tabsByPageKey.Remove(tab.PageKey);
-            Tabs.Remove(tab);
+        }
+        
+        // 然后批量从集合中移除（从后往前移除，避免索引问题）
+        for (int i = Tabs.Count - 1; i >= 0; i--)
+        {
+            if (Tabs[i] != _contextMenuTab)
+            {
+                Tabs.RemoveAt(i);
+            }
         }
 
         SelectedTab = _contextMenuTab;
@@ -327,6 +343,18 @@ public partial class DocumentTabHost : UserControl, INotifyPropertyChanged
         Tabs.Clear();
         SelectedTab = null;
         _contextMenuTab = null;
+    }
+
+    /// <summary>
+    /// 标签栏空白区域右键菜单打开事件
+    /// </summary>
+    private void TabBar_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+    {
+        // 确保菜单只在有标签页时显示
+        if (Tabs.Count == 0)
+        {
+            e.Handled = true;
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
